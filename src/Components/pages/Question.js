@@ -2,7 +2,7 @@
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
-
+import axios from 'axios'
 
 const initialQuestion = {
     id_pregunta: "",
@@ -25,8 +25,16 @@ const Question = () => {
     
     
     
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
         e.preventDefault();
+        const res = await axios.post('http://localhost:8080/api/users', {
+            id_pregunta: formQuestion.id_pregunta,
+            id_formulario: formQuestion.id_formulario,
+            pregunta: formQuestion.pregunta
+
+        });
+        
+        setFormQuestion(initialQuestion);
     }
     return (
         <div>

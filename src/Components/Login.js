@@ -52,6 +52,8 @@ const Login = () => {
    if(form.email === "uno@dos" && form.pass === "uno"){
      console.log("entro");
      window.location.href="./Admin"
+   } else {
+     window.location.href="./User"
    }
  }
 
