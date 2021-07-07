@@ -30,8 +30,8 @@ const Login = () => {
           </Col>
           <Col className="ComumnaDos" md={12} xl={7}>
             <div className="Enlaces">
-               <a href className="Enlace" onClick={handleSesion}>Iniciar Sesión</a>
-               <a href className="Enlace" onClick={handleCuenta}>Crear una cuenta</a>
+               <a className="Enlace" onClick={handleSesion}>Iniciar Sesión</a>
+               <a  className="Enlace" onClick={handleCuenta}>Crear una cuenta</a>
             </div>
            
 

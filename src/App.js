@@ -10,6 +10,7 @@ import Documentacion from './Components/pages/Documentacion';
 
 import Login from './Components/Login'
 import Admin from './Components/Admin';
+import User from './Components/User'
 import Question from './Components/pages/Question';
 
 function App() {
@@ -19,9 +20,11 @@ function App() {
        
        
          <Switch>
-      
-           <Route path="/" component={Login}></Route>
-           <Route path="/Admin" component={Admin}></Route>
+           
+           <Route exact path="/" component={Login}></Route>
+           <Route  path="/Admin" component={Admin}></Route>
+           <Route  path="/User" component={User}></Route>
+         
            
            <Route path="/Docs" component={Documentacion}></Route>
          </Switch>
