@@ -18,7 +18,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PreguntaUsuario from './pages/PreguntaUsuario';
-import { Button } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
       display: 'none',
+      background: "#2193b0",
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
@@ -71,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
     sectionDesktop: {
+      background: "#2193b0",
       display: 'none',
       [theme.breakpoints.up('md')]: {
         display: 'flex',
@@ -271,7 +273,7 @@ const User = () => {
 
     return (
         <div className={classes.grow}>
-        <AppBar position="static">
+        <AppBar position="static" style={{background: "#2193b0"}}>
           <Toolbar>
             <IconButton
               edge="start"
@@ -282,7 +284,7 @@ const User = () => {
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              Material-UI
+              Usuario 1
             </Typography>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -337,13 +339,25 @@ const User = () => {
         {renderMenu}
         
 
+        <Grid Container>
+             <Grid item xs={12}>
+                <h3>Por favor responda las siquientes preguntas</h3>
+             </Grid> 
+        </Grid>
+
         <div>
              
             {preguntas.map((el) => <PreguntaUsuario id={el.idCoworkerPregunta} calif={transform(true,el.calificacion)} handleAnswer={handleAnswer} key={el.pregunta.idPregunta} Pregunta={el.pregunta.pregunta}></PreguntaUsuario>)}
         
                
         </div>
-        <Button onClick={enviar}>dddd</Button> 
+ 
+        <Button onClick={enviar}
+                style={{ background: "#2193b0", color: "#fff", marginRight:"50px" }}
+                variant="contained"
+              >
+                Enviar
+              </Button>
        
       </div>
     )
