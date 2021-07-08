@@ -27,12 +27,7 @@ const Question = () => {
     
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        const res = await axios.post('http://localhost:8080/api/users', {
-            id_pregunta: formQuestion.id_pregunta,
-            id_formulario: formQuestion.id_formulario,
-            pregunta: formQuestion.pregunta
-
-        });
+        const res = await axios.get(`http://localhost:8080/seguridad/agregarPregunta/1/${formQuestion.pregunta}`);
         
         setFormQuestion(initialQuestion);
     }
@@ -40,7 +35,7 @@ const Question = () => {
         <div>
             <h2>Agregar una nueva pregunta al GAP Análisis</h2>
 
-            <form>
+            <form onSubmit={handleSubmit}>
                 <input type="text" value={formQuestion.pregunta} name="pregunta" onChange={handleChange} ></input>
                 <input type="submit"></input>
 

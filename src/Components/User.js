@@ -17,6 +17,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import PreguntaUsuario from './pages/PreguntaUsuario';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -84,20 +86,107 @@ const useStyles = makeStyles((theme) => ({
 
 const User = () => {
     const [preguntas, setPreguntas] = useState([]); 
+    const [cowocer, setCowoker] = useState([]); 
 
     useEffect(() => {
        
         const obtenerPreguntas = async () =>{
       
-            const res = await axios.get('http://localhost:8080/obtenerPreguntas');
+            const res = await axios.get('http://localhost:8080/seguridad/preguntasCoworker/1');
+            setPreguntas(res.data);
             console.log(res);
         }
 
-        //obtenerPreguntas();
-
-
+        obtenerPreguntas();
+        console.log(transform(true,4))
 
     }, []) 
+
+    const transform = (op, val) =>{
+      let valor;
+      if(op){
+        switch(val){
+          case 1:
+            valor = "a"
+            break;
+          case 2:
+              valor = "b"
+              break; 
+          case 3:
+              valor = "c"
+              break;
+          case 4:
+            valor = "d"
+            break;
+          case 5:
+            valor = "e";
+            break;
+          default:
+            valor = "a";  
+        }
+      }else {
+        switch(val){
+          case 'a':
+            valor = 1
+            break;
+          case 'b':
+              valor = 2
+              break; 
+          case 'c':
+              valor = 3
+              break;
+          case 'd':
+            valor = 4
+            break;
+          case 'e':
+            valor = 5;
+            break;
+          default:
+            valor = 1;  
+        }
+      }
+      return valor;
+    }
+
+    const enviar = async () => {
+      respuestas();
+      console.log(cowocer);
+      const res = await axios.post('http://localhost:8080/seguridad/actualizarPreguntas/1',cowocer)
+      
+      console.log(res);
+    }
+
+    const respuestas = () => {
+       
+      preguntas.forEach((el) => {
+        let v ={
+          idCoworkerPregunta: el.idCoworkerPregunta,
+          calificacion: el.calificacion,
+          pregunta: {
+            idPregunta: el.pregunta.idPregunta
+          }
+        }
+        cowocer.push(v);
+      });
+
+     
+    }
+
+    const handleAnswer = (id, calif) =>{
+      console.log(id);
+
+      preguntas.forEach((el) => {
+         if(id === el.idCoworkerPregunta){
+          
+            el.calificacion = calif
+         }
+      })
+      setPreguntas(preguntas);
+        // let newData = preguntas.map(el => el.idCoworkerPregunta === id? el.calificacion = calif:el);
+        // setPreguntas(newData); 
+        
+
+    }
 
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -246,6 +335,16 @@ const User = () => {
         </AppBar>
         {renderMobileMenu}
         {renderMenu}
+        
+
+        <div>
+             
+            {preguntas.map((el) => <PreguntaUsuario id={el.idCoworkerPregunta} calif={transform(true,el.calificacion)} handleAnswer={handleAnswer} key={el.pregunta.idPregunta} Pregunta={el.pregunta.pregunta}></PreguntaUsuario>)}
+        
+               
+        </div>
+        <Button onClick={enviar}>dddd</Button> 
+       
       </div>
     )
 }
