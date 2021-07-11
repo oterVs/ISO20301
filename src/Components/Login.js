@@ -29,10 +29,10 @@ const Login = () => {
             <img  src="../../images/team.svg" alt=""></img>
           </Col>
           <Col className="ComumnaDos" md={12} xl={7}>
-            <div className="Enlaces">
+            {/* <div className="Enlaces">
                <a className="Enlace" onClick={handleSesion}>Iniciar Sesión</a>
                <a  className="Enlace" onClick={handleCuenta}>Crear una cuenta</a>
-            </div>
+            </div> */}
            
 
             {sesion? <InisiarSesion></InisiarSesion>:<Registro></Registro>}

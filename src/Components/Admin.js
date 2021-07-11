@@ -20,6 +20,8 @@ import MailIcon from '@material-ui/icons/Mail';
 import {Link, Switch, Route, useRouteMatch, Redirect} from 'react-router-dom';
 import Question from "../Components/pages/Question";
 import Grafico from './pages/Grafico';
+import CreacionUsuario from "./pages/CrecionUsuario";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -145,7 +147,7 @@ const Admin = () => {
         </div>
         <Divider />
         <List>
-          {['Question', 'Grafico', 'Salir', 'Drafts'].map((text, index) => (
+          {['Question', 'Grafico', 'CreacionUsuario','Salir', 'Drafts'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               {/* <ListItemText primary={text} /> */}
@@ -168,9 +170,10 @@ const Admin = () => {
         <div className={classes.toolbar} />
         
         <Switch>
-            
+
             <Route path={`${path}/Question`} component={Question}></Route>
             <Route path={`${path}/Grafico`} component={Grafico}></Route>
+            <Route path={`${path}/CreacionUsuario`} component={CreacionUsuario}></Route>
             <Route path={`${path}/Salir`} component={Grafico}>
               <Redirect to="/"></Redirect>
             </Route>

@@ -6,6 +6,9 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import "../../../src/App.css";
 import TextField from "@material-ui/core/TextField"
+import { makeStyles } from '@material-ui/core/styles';
+import Alert from '@material-ui/lab/Alert';
+
 const initialQuestion = {
   id_pregunta: "",
   id_formulario: "1",
@@ -21,9 +24,20 @@ const styles = (theme) => ({
   },
 });
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
 const Question = () => {
   const [formQuestion, setFormQuestion] = useState(initialQuestion);
   const { classes } = styles;
+  const clas = useStyles();
+
   const handleChange = (e) => {
     setFormQuestion({ ...formQuestion, [e.target.name]: e.target.value });
   };
@@ -32,14 +46,23 @@ const Question = () => {
     e.preventDefault();
     const res = await axios.get(
       `http://localhost:8080/seguridad/agregarPregunta/1/${formQuestion.pregunta}`
-    );
+    )
 
-    setFormQuestion(initialQuestion);
+    
+
+    if(res.ok){
+      <Alert severity="success">Pregunta guardada con exito!</Alert>
+      setFormQuestion(initialQuestion);
+    }else {
+      <Alert severity="error">La pregunta no se guardo correctamente!</Alert>
+    }
+
+    
   };
   return (
     <div>
-      <Grid Container spacing={15}>
-        <Grid item xs={12}>
+      <Grid Container spacing={3}>
+        <Grid item xs={12}  >
           <h2 style={{ textAlign: "center", marginBottom:"20px" }}>
             Agregar una nueva pregunta al GAP Análisis
           </h2>
