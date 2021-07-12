@@ -1,62 +1,137 @@
-import { useRouteMatch } from "react-router-dom";
+import React, {useEffect} from "react";
 import { Form, Button } from "react-bootstrap";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
+import Cookies from "universal-cookie";
 
 const initialForm = {
-  email: "",
+  usuario: "",
   pass: "",
 };
 
+const cookies = new Cookies();
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+    "& > * + *": {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
 const InisiarSesion = () => {
   const [form, setForm] = useState(initialForm);
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+
+  useEffect(() => {
+    cookies.remove("usuario", { path: "/" });
+    cookies.remove("tipo", { path: "/" });
+  }, [])
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.email === "uno@dos" && form.pass === "uno") {
-      console.log("entro");
-      window.location.href = "./Admin";
-    } else {
-      window.location.href = "./User";
-    }
+
+     await axios
+      .get(
+        `http://localhost:8080/seguridad/iniciarSession/${form.usuario}/${form.pass}`
+      )
+      .then((response) => {
+    
+        return response.data;
+
+      })
+      .then((response) => {
+        
+        if (response) {
+          console.log(response)
+          let respuesta = response[0];
+          console.log(respuesta);
+          cookies.set("usuario", response.nombreUsuario, { path: "/" });
+          cookies.set("tipo", response.rol.idRol, { path: "/" });
+          console.log(cookies.get("tipo"));
+
+          if (cookies.get("tipo") > 1) {
+            window.location.href = "./User";
+          } else {
+            console.log("entro");
+            window.location.href = "./Admin";
+          }
+        } else {
+         
+          setOpen(true);
+        }
+      })
+      .catch((error) => console.log(error));
+  
+    // if (form.email === "uno@dos" && form.pass === "uno") {
+    //   console.log("entro");
+    //   window.location.href = "./Admin";
+    // } else {
+    //   window.location.href = "./User";
+    // }
   };
   return (
     <>
       <Form>
-        <h2>Bienvenido a ISOTools</h2>
+        <h2>SGCN</h2>
         <hr></hr>
         <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
+          <Form.Label>Usuario</Form.Label>
           <Form.Control
-            type="email"
-            name="email"
-            value={form.email}
+            type="txt"
+            name="usuario"
+            value={form.usuario}
             onChange={handleChange}
-            placeholder="Enter email"
+            placeholder="Ingrese su Usuario"
           />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
         </Form.Group>
 
         <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Contraseña</Form.Label>
           <Form.Control
             type="password"
             name="pass"
             value={form.pass}
             onChange={handleChange}
-            placeholder="Password"
+            placeholder="Intrese su Contraseña"
           />
         </Form.Group>
 
         <Button className="prueba" variant="primary" onClick={handleSubmit}>
           Submit
         </Button>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            Usuario incorrecto!
+          </Alert>
+        </Snackbar>
       </Form>
     </>
   );

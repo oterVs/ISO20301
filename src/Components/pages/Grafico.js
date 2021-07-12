@@ -1,10 +1,14 @@
-import { Radar } from "react-chartjs-2";
-
+import { Radar, Chart } from "react-chartjs-2";
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
+
+
+
 const top100Films = [
   { title: "The Shawshank Redemption", year: 1994 },
   { title: "The Godfather", year: 1972 },
@@ -126,7 +130,7 @@ const data = {
   labels: ["Thing 1", "Thing 2", "Thing 3", "Thing 4", "Thing 5", "Thing 6"],
   datasets: [
     {
-      label: "# of Votes",
+      label: "Calificacion",
       data: [4, 4, 2, 3.4, 1, 2],
       backgroundColor: "rgba(255, 99, 132, 0.1)",
       borderColor: "rgba(255, 99, 132, 1)",
@@ -134,6 +138,16 @@ const data = {
     },
   ],
 };
+
+// const datasets = [
+//   {
+//     label: "Calificacion",
+//     data: [],
+//     backgroundColor: "rgba(255, 99, 132, 0.1)",
+//     borderColor: "rgba(255, 99, 132, 1)",
+//     borderWidth: 1,
+//   },
+// ]
 
 const options = {
   scale: {
@@ -143,6 +157,126 @@ const options = {
 
 const Grafico = () => {
   const classes = useStyles();
+  const [universidad, setUniversidad] = useState(null);
+  const [uni, setUni] = useState("Universidad Central Del Ecuador");
+  const [preguntas, setPreguntas] = useState([]);
+  const [notas, setNotas] = useState([]);
+  const ref = useRef();
+ 
+  // const [labels, setLabels] = useState([]);
+  // const [dataset, setDataset] = useState(datasets);
+  const [dat, setDat] = useState(data)
+
+  useEffect(() => {
+    obtenerUniversidades();
+    obtenerPreguntas();
+    let ctx = document.getElementById("myChart").getContext("2d");
+    window.grafica = new Chart(ctx, {type:"radar", data: dat, options: options })
+
+  }, []);
+
+  useEffect(() => {
+    obtenerNotas();
+    
+  }, [uni]);
+
+  // useEffect(() => {
+  //   let ctx = document.getElementById("grafico").getContext("2d");
+
+  // }, [data]);
+  const obtenerPreguntas = async () => {
+    const res = await axios.get(
+      "http://localhost:8080/seguridad/preguntasCoworker/omarg"
+    );
+    setPreguntas(res.data);
+  
+
+    
+
+  };
+
+  const colocarLabel = () => {
+     let newData = data;
+
+    preguntas.forEach((el) => {
+      
+      newData.labels[el.pregunta.idPregunta -1 ] = `Pregunta: ${el.pregunta.idPregunta}`;
+      console.log( dat.labels[el.pregunta.idPregunta -1 ]);
+      newData.datasets[0].data[el.pregunta.idPregunta -1] = 0;
+      // newData.push(`Pregunta: ${el.pregunta.idPregunta}`);
+    
+    })
+
+    console.log(newData);
+    setDat(newData);
+    
+    let ctx = document.getElementById("myChart").getContext("2d");
+  
+  
+ 
+       if(window.grafica){
+          window.grafica.clear();
+          window.grafica.destroy();
+       }
+
+       window.grafica = new Chart(ctx, {type:"radar", data: dat, options: options })
+  
+      
+      //   window.myCharts = new Chart(ctx, {type: "radar", data: data, options: options})
+      // newChart.destroy();
+      // newChart = new Chart(ctx, { data: data, options: options});
+  }
+  const obtenerUniversidades = async () => {
+    const res = await axios.get(
+      "http://localhost:8080/seguridad/obtenerUniversidades"
+    );
+    // console.log(res);
+    // console.log(res.data[0].univesidades);
+    setUniversidad(res.data);
+    console.log(universidad);
+  };
+
+  const obtenerNotas = async () => {
+    let newData = data;
+ 
+    console.log("entro");
+    // await axios.get(
+    //   `http://localhost:8080/seguridad/promedioPreguntas/GAP ANÁLISIS/${uni}`
+    // ).then((response) =>{
+    //     return response.data
+    // }).then((response) => {
+    //   response.forEach(element => {
+    //     newData.push(element.nota);
+    //     labels.push()
+    //   });
+    //   console.log(response);
+    // });
+    await axios.get(
+        `http://localhost:8080/seguridad/soloPromedioPreguntas/GAP ANÁLISIS/${uni}`
+      ).then((res) => {
+        return res.data
+      }).then((res)=>{
+        preguntas.forEach((el)=>{
+          newData.labels[el.pregunta.idPregunta -1 ] = `Pregunta: ${el.pregunta.idPregunta}`;
+          newData.datasets[0].data[el.pregunta.idPregunta -1] = res[`promedio ${el.pregunta.idPregunta}`];
+        
+        })
+      })
+      setDat(newData);
+      let ctx = document.getElementById("myChart").getContext("2d");
+  
+
+       if(window.grafica){
+          window.grafica.clear();
+          window.grafica.destroy();
+       }
+       window.grafica = new Chart(ctx, {type:"radar", data: dat, options: options })
+    
+   
+      
+
+  }
+  
   return (
     <div>
       <Grid container>
@@ -151,23 +285,37 @@ const Grafico = () => {
             Grafico del GAP Análisis
           </h2>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{ marginBottom: "50px" }}>
           <Autocomplete
+
+           
+            onChange={(event, newValue) => {
+             setUni(newValue.nombreUniversidad);
+            }}
+            
             id="combo-box-demo"
-            options={top100Films}
-            getOptionLabel={(option) => option.title}
+            options={universidad}
+            getOptionLabel={(option) => option.nombreUniversidad}
             style={{ width: 300, margin: "0.5cm" }}
             renderInput={(params) => (
-              <TextField {...params} label="Universdad" variant="outlined" />
+              <TextField {...params}  label="Universdad" variant="outlined" />
             )}
           />
         </Grid>
         <Grid container xs={12}>
           <Grid item xs={5}>
-            <Paper className={classes.paper}>xs=12</Paper>
+            {preguntas.map((el) => (
+              <p key={el.pregunta.idPregunta}>
+                {el.pregunta.idPregunta} {el.pregunta.pregunta}
+              </p>
+            ))}
           </Grid>
-          <Grid item xs={5}>
-            <Radar data={data} options={options} />
+          <Grid item xs={1}>
+           
+          </Grid>
+          <Grid item xs={6}>
+            {/* <Radar id="grafico" ref={ref}  data={dat} options={options} /> */}
+            <canvas id="myChart" width="100%"></canvas>
           </Grid>
         </Grid>
       </Grid>

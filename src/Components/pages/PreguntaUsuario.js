@@ -1,21 +1,26 @@
-import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { green } from "@material-ui/core/colors";
-import Radio from "@material-ui/core/Radio";
+import React, {useEffect} from "react";
 
-const GreenRadio = withStyles({
-  root: {
-    color: green[400],
-    "&$checked": {
-      color: green[600],
-    },
-  },
-  checked: {},
-})((props) => <Radio color="default" {...props} />);
+
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 const PreguntaUsuario = ({id,calif, handleAnswer,Pregunta }) => {
-  const [selectedValue, setSelectedValue] = React.useState(calif);
 
+  const [value, setValue] = React.useState(`${calif}`);
+  
+  const handleChange = (event) => {
+    
+    setValue(event.target.value);
+
+  };
+
+
+  useEffect(() => {
+    handleAnswer(id, value);
+  }, [value])
 
   const transform = (op, val) =>{
     let valor;
@@ -64,52 +69,23 @@ const PreguntaUsuario = ({id,calif, handleAnswer,Pregunta }) => {
   }
 
 
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-    handleAnswer(id,transform(false,selectedValue));
-  };
+  
 
   return (
     <div>
-      <h3>{Pregunta}</h3>  
-      <Radio
-        checked={selectedValue === "a"}
-        onChange={handleChange}
-        value="a"
-        name="radio-button-demo"
-        inputProps={{ "aria-label": "A" }}
-      />
-      <Radio
-        checked={selectedValue === "b"}
-        onChange={handleChange}
-        value="b"
-        name="radio-button-demo"
-        inputProps={{ "aria-label": "B" }}
-      />
-      <GreenRadio
-        checked={selectedValue === "c"}
-        onChange={handleChange}
-        value="c"
-        name="radio-button-demo"
-        inputProps={{ "aria-label": "C" }}
-      />
-      <Radio
-        checked={selectedValue === "d"}
-        onChange={handleChange}
-        value="d"
-        color="default"
-        name="radio-button-demo"
-        inputProps={{ "aria-label": "D" }}
-      />
-      <Radio
-        checked={selectedValue === "e"}
-        onChange={handleChange}
-        value="e"
-        color="default"
-        name="radio-button-demo"
-        inputProps={{ "aria-label": "E" }}
-        size="small"
-      />
+      <p>{Pregunta}</p>  
+      <FormControl component="fieldset">
+      <FormLabel component="legend">Gender</FormLabel>
+      <RadioGroup row aria-label="gender" name="gender1" value={value} onChange={handleChange}>
+        <FormControlLabel value="0" control={<Radio />} label="0" />
+        <FormControlLabel value="1" control={<Radio />} label="1" />
+        <FormControlLabel value="2" control={<Radio />} label="2" />
+        <FormControlLabel value="3" control={<Radio />} label="3" />
+        <FormControlLabel value="4" control={<Radio />} label="4" />
+        <FormControlLabel value="5" control={<Radio />} label="5" />
+       
+      </RadioGroup>
+    </FormControl>
     </div>
   );
 };

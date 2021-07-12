@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { unstable_Box as Box } from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -8,6 +8,8 @@ import "../../../src/App.css";
 import TextField from "@material-ui/core/TextField"
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
 
 const initialQuestion = {
   id_pregunta: "",
@@ -37,7 +39,20 @@ const Question = () => {
   const [formQuestion, setFormQuestion] = useState(initialQuestion);
   const { classes } = styles;
   const clas = useStyles();
+ 
+  const [open, setOpen] = React.useState(false);
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
   const handleChange = (e) => {
     setFormQuestion({ ...formQuestion, [e.target.name]: e.target.value });
   };
@@ -47,15 +62,11 @@ const Question = () => {
     const res = await axios.get(
       `http://localhost:8080/seguridad/agregarPregunta/1/${formQuestion.pregunta}`
     )
-
     
+    setOpen(true);
+    setFormQuestion(initialQuestion);
 
-    if(res.ok){
-      <Alert severity="success">Pregunta guardada con exito!</Alert>
-      setFormQuestion(initialQuestion);
-    }else {
-      <Alert severity="error">La pregunta no se guardo correctamente!</Alert>
-    }
+  
 
     
   };
@@ -119,6 +130,11 @@ const Question = () => {
 
         <Grid item xs={12} sm={6}></Grid>
       </Grid>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success">
+            Nota añadida con exito
+          </Alert>
+        </Snackbar>
     </div>
   );
 };

@@ -19,6 +19,10 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import PreguntaUsuario from './pages/PreguntaUsuario';
 import { Button, Grid } from '@material-ui/core';
+import Escala from './pages/Escala';
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -93,8 +97,9 @@ const User = () => {
     useEffect(() => {
        
         const obtenerPreguntas = async () =>{
-      
-            const res = await axios.get('http://localhost:8080/seguridad/preguntasCoworker/1');
+            let usuario = cookies.get("usuario");
+            console.log(usuario);
+            const res = await axios.get(`http://localhost:8080/seguridad/preguntasCoworker/${usuario}`);
             setPreguntas(res.data);
             console.log(res);
         }
@@ -103,6 +108,10 @@ const User = () => {
         console.log(transform(true,4))
 
     }, []) 
+
+    const salir = () =>{
+      window.location.href = "./";
+    }
 
     const transform = (op, val) =>{
       let valor;
@@ -152,10 +161,12 @@ const User = () => {
 
     const enviar = async () => {
       respuestas();
+      let usuario = cookies.get("usuario");
       console.log(cowocer);
-      const res = await axios.post('http://localhost:8080/seguridad/actualizarPreguntas/1',cowocer)
+      const res = await axios.post(`http://localhost:8080/seguridad/actualizarPreguntas/${usuario}`,cowocer)
       
       console.log(res);
+      setCowoker([]);
     }
 
     const respuestas = () => {
@@ -175,15 +186,15 @@ const User = () => {
     }
 
     const handleAnswer = (id, calif) =>{
-      console.log(id);
+      console.log(id,calif);
 
-      preguntas.forEach((el) => {
-         if(id === el.idCoworkerPregunta){
+       preguntas.forEach((el) => {
+          if(id === el.idCoworkerPregunta){
           
-            el.calificacion = calif
+             el.calificacion = parseInt(calif,10)
          }
-      })
-      setPreguntas(preguntas);
+       })
+       setPreguntas(preguntas);
         // let newData = preguntas.map(el => el.idCoworkerPregunta === id? el.calificacion = calif:el);
         // setPreguntas(newData); 
         
@@ -284,43 +295,14 @@ const User = () => {
               <MenuIcon />
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              Usuario 1
+              {cookies.get("usuario")}
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div>
+            
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
+             
+              
+              <Button style={{color: "#fff"}} onClick={salir}> Salir </Button>
             </div>
             <div className={classes.sectionMobile}>
               <IconButton
@@ -339,25 +321,37 @@ const User = () => {
         {renderMenu}
         
 
-        <Grid Container>
+        <Grid container style={{padding:"1cm"}}>
              <Grid item xs={12}>
-                <h3>Por favor responda las siquientes preguntas</h3>
+                <h3 style={{ textAlign: "center", marginBottom: "20px" }}>Por favor responda las siquientes preguntas</h3>
              </Grid> 
-        </Grid>
-
-        <div>
-             
-            {preguntas.map((el) => <PreguntaUsuario id={el.idCoworkerPregunta} calif={transform(true,el.calificacion)} handleAnswer={handleAnswer} key={el.pregunta.idPregunta} Pregunta={el.pregunta.pregunta}></PreguntaUsuario>)}
-        
-               
-        </div>
- 
-        <Button onClick={enviar}
+             <Grid item xs={3}>
+                <h4>Escala</h4>
+                <Escala></Escala>
+             </Grid> 
+             <Grid item xs={1}>
+                
+             </Grid> 
+             <Grid item xs={8}>
+                {preguntas.map((el) => <PreguntaUsuario id={el.idCoworkerPregunta} calif={el.calificacion} handleAnswer={handleAnswer} key={el.pregunta.idPregunta} Pregunta={el.pregunta.pregunta}></PreguntaUsuario>)}
+             </Grid> 
+             <Grid item xs={11}>
+                
+             </Grid> 
+             <Grid item xs={1}>
+             <Button onClick={enviar}
                 style={{ background: "#2193b0", color: "#fff", marginRight:"50px" }}
                 variant="contained"
               >
                 Enviar
               </Button>
+             </Grid> 
+        </Grid>
+
+
+    
+ 
+     
        
       </div>
     )
