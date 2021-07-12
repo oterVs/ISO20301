@@ -75,17 +75,15 @@ const CrecionUsuario = () => {
 
   const enviarNuevoUsuario = async () => {
     
-    const res = await axios.post(
-      "http://localhost:8080/seguridad/crearCoworker",
-      formUsuario
-    );
+   
     setUsuario(datosUsuario);
     setUniv(uniSelec);
     setMainInstitucional("");
     setFormUsuario(initialForm);
+    setOpen2(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     
     if (
       !usuario.nombreUsuario ||
@@ -97,7 +95,11 @@ const CrecionUsuario = () => {
     } else {
       console.log("entros2");
       setFormUsuario({ mailInstitucional: mailInstitucional , usuario, universidad });
-      setOpen2(true);
+      const res = await axios.post(
+        
+        "http://localhost:8080/seguridad/crearCoworker",
+        {mailInstitucional: mailInstitucional , usuario, universidad}
+      );
      
       
       enviarNuevoUsuario();
