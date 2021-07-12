@@ -21,6 +21,8 @@ import PreguntaUsuario from './pages/PreguntaUsuario';
 import { Button, Grid } from '@material-ui/core';
 import Escala from './pages/Escala';
 import Cookies from "universal-cookie";
+import Alert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const cookies = new Cookies();
 
@@ -93,7 +95,15 @@ const useStyles = makeStyles((theme) => ({
 const User = () => {
     const [preguntas, setPreguntas] = useState([]); 
     const [cowocer, setCowoker] = useState([]); 
+    const [open, setOpen] = React.useState(false);
+    
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
 
+    setOpen(false);
+  };
     useEffect(() => {
        
         const obtenerPreguntas = async () =>{
@@ -166,6 +176,7 @@ const User = () => {
       const res = await axios.post(`http://localhost:8080/seguridad/actualizarPreguntas/${usuario}`,cowocer)
       
       console.log(res);
+      setOpen(true);
       setCowoker([]);
     }
 
@@ -347,7 +358,11 @@ const User = () => {
               </Button>
              </Grid> 
         </Grid>
-
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success">
+            Formulario enviado!
+          </Alert>
+        </Snackbar>
 
     
  

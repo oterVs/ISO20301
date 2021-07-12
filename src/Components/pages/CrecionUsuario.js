@@ -28,7 +28,7 @@ const uniSelec = {
   idUniversidad: "",
 };
 const initialForm = {
-  mailInstitucional: "ddd",
+  mailInstitucional: "",
   datosUsuario,
   uniSelec,
 };
@@ -96,7 +96,7 @@ const CrecionUsuario = () => {
       
     } else {
       console.log("entros2");
-      setFormUsuario({ mailInstitucional:"DD", usuario, universidad });
+      setFormUsuario({ mailInstitucional: mailInstitucional , usuario, universidad });
       setOpen2(true);
      
       
