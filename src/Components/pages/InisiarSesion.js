@@ -60,7 +60,7 @@ const InisiarSesion = () => {
 
      await axios
       .get(
-        `http://localhost:8080/seguridad/iniciarSession/${form.usuario}/${form.pass}`
+        `https://sgcn-app.herokuapp.com/seguridad/iniciarSession/${form.usuario}/${form.pass}`
       )
       .then((response) => {
     
