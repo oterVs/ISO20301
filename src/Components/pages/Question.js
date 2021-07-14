@@ -69,7 +69,16 @@ const Question = () => {
 
   const reiniciar = async () => {
 
-    await axios.get("https://sgcn-app.herokuapp.com/seguridad/resetearTodo");
+    await axios.get("https://sgcn-app.herokuapp.com/seguridad/resetearTodo").then((response) => {
+      setOpen(true);
+      setMesaggeAlert("Reinicio realizado con exito");
+      setTypeAlert("success");
+    }).catch((e) => {
+      setOpen(true);
+      setMesaggeAlert("No se pudo completar el reinicio");
+      setTypeAlert("error");
+    });
+    setOpenD(true);
   }
 
   const handleClose = (event, reason) => {
