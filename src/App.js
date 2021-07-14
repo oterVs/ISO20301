@@ -1,6 +1,6 @@
 
 import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, HashRouter, Route, Switch } from 'react-router-dom';
 import Navegacion from './Components/Navegacion';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,19 +16,33 @@ import Question from './Components/pages/Question';
 function App() {
   return (
     <div >
-       <Router>
-       
-       
-         <Switch>
+
+      <HashRouter>
+      <Switch>
            
            <Route exact path="/" component={Login}></Route>
-           <Route  path="/Admin" component={Admin}></Route>
-           <Route  path="/User" component={User}></Route>
+           <Route  path="/#/Admin" component={Admin}></Route>
+           <Route  path="/#/User" component={User}></Route>
          
            
            <Route path="/Docs" component={Documentacion}></Route>
          </Switch>
-       </Router>
+
+
+
+      </HashRouter>
+      {/* <Switch>
+           
+           <Route exact path="/" component={Login}></Route>
+           <Route  path="/#/Admin" component={Admin}></Route>
+           <Route  path="/#/User" component={User}></Route>
+         
+           
+           <Route path="/Docs" component={Documentacion}></Route>
+         </Switch> */}
+
+
+     
     </div>
   );
 }

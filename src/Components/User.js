@@ -109,7 +109,7 @@ const User = () => {
       let usuario = cookies.get("usuario");
       console.log(usuario);
       const res = await axios.get(
-        `http://localhost:8080/seguridad/preguntasCoworker/${usuario}`
+        `https://localhost:8080/seguridad/preguntasCoworker/${usuario}`
       );
       setPreguntas(res.data);
       console.log(res);

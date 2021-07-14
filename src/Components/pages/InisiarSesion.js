@@ -78,10 +78,10 @@ const InisiarSesion = () => {
           console.log(cookies.get("tipo"));
 
           if (cookies.get("tipo") > 1) {
-            window.location.href = "./User";
+            window.location.href = "./#/User";
           } else {
             console.log("entro");
-            window.location.href = "./Admin";
+            window.location.href = "./#/Admin";
           }
         } else {
          
