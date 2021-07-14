@@ -186,7 +186,7 @@ const Grafico = () => {
   // }, [data]);
   const obtenerPreguntas = async () => {
     const res = await axios.get(
-      "http://localhost:8080/seguridad/preguntasCoworker/omarg"
+      "https://sgcn-app.herokuapp.com/seguridad/preguntasCoworker/corbe"
     );
     setPreguntas(res.data);
   
@@ -228,7 +228,7 @@ const Grafico = () => {
   }
   const obtenerUniversidades = async () => {
     const res = await axios.get(
-      "http://localhost:8080/seguridad/obtenerUniversidades"
+      "https://sgcn-app.herokuapp.com/seguridad/obtenerUniversidades"
     );
     // console.log(res);
     // console.log(res.data[0].univesidades);
@@ -252,7 +252,7 @@ const Grafico = () => {
     //   console.log(response);
     // });
     await axios.get(
-        `http://localhost:8080/seguridad/soloPromedioPreguntas/GAP ANÁLISIS/${uni}`
+        `https://sgcn-app.herokuapp.com/seguridad/soloPromedioPreguntas/GAP ANÁLISIS/${uni}`
       ).then((res) => {
         return res.data
       }).then((res)=>{
@@ -290,8 +290,13 @@ const Grafico = () => {
 
            
             onChange={(event, newValue) => {
-             setUni(newValue.nombreUniversidad);
+              if(newValue){
+                setUni(newValue.nombreUniversidad);
+              }
+          
             }}
+
+           
             
             id="combo-box-demo"
             options={universidad}

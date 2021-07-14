@@ -60,7 +60,7 @@ const Question = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await axios.get(
-      `http://localhost:8080/seguridad/agregarPregunta/1/${formQuestion.pregunta}`
+      `https://sgcn-app.herokuapp.com/seguridad/agregarPregunta/1/${formQuestion.pregunta}`
     )
     
     setOpen(true);

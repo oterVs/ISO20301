@@ -10,23 +10,12 @@ import InisiarSesion from "./pages/InisiarSesion";
 
 const Login = () => {
   
-  const [sesion, setSesion] = useState(true);
-
-
- const handleSesion = () => {
-    setSesion(true);
- }
- const handleCuenta = () => {
-    setSesion(false);
-}
-
-
   return (
     <>
       <Container fluid className="Container">
         <Row className="row">
           <Col className="ColumnaUno"  xl={5}>
-            <img  src="../../images/team.svg" alt=""></img>
+            <img  src="https://bizroulette.app/static/media/undraw_unlock_24mb.9b0de180.svg" alt=""></img>
           </Col>
           <Col className="ComumnaDos" md={12} xl={7}>
             {/* <div className="Enlaces">
@@ -35,7 +24,7 @@ const Login = () => {
             </div> */}
            
 
-            {sesion? <InisiarSesion></InisiarSesion>:<Registro></Registro>}
+            {true? <InisiarSesion></InisiarSesion>:<Registro></Registro>}
 
           </Col>
         </Row>

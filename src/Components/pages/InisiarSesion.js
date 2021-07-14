@@ -7,6 +7,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import { useHistory, useLocation } from "react-router-dom";
 
 const initialForm = {
   usuario: "",
@@ -32,11 +33,14 @@ const InisiarSesion = () => {
   const [form, setForm] = useState(initialForm);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-
-
+  let location = useLocation();
+  let history = useHistory();
+  
   useEffect(() => {
     cookies.remove("usuario", { path: "/" });
     cookies.remove("tipo", { path: "/" });
+    console.log(location);
+    console.log(history);
   }, [])
 
   const handleClick = () => {
@@ -77,11 +81,14 @@ const InisiarSesion = () => {
           cookies.set("tipo", response.rol.idRol, { path: "/" });
           console.log(cookies.get("tipo"));
 
-          if (cookies.get("tipo") > 1) {
-            window.location.href = "./#/User";
-          } else {
+          if (cookies.get("tipo") === "1") {
+            history.push("/Admin");
+          } else if(cookies.get("tipo") === "3") {
             console.log("entro");
-            window.location.href = "./#/Admin";
+            history.push("/AdminParticipantes");
+           
+          } else {
+            history.push("/User");
           }
         } else {
          
@@ -100,7 +107,7 @@ const InisiarSesion = () => {
   return (
     <>
       <Form>
-        <h2>SGCN</h2>
+        <h2>SGCN_2</h2>
         <hr></hr>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Usuario</Form.Label>

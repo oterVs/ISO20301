@@ -109,72 +109,28 @@ const User = () => {
       let usuario = cookies.get("usuario");
       console.log(usuario);
       const res = await axios.get(
-        `https://localhost:8080/seguridad/preguntasCoworker/${usuario}`
+        `https://sgcn-app.herokuapp.com/seguridad/preguntasCoworker/${usuario}`
       );
       setPreguntas(res.data);
       console.log(res);
     };
 
     obtenerPreguntas();
-    console.log(transform(true, 4));
+ 
   }, []);
 
   const salir = () => {
     window.location.href = "./";
   };
 
-  const transform = (op, val) => {
-    let valor;
-    if (op) {
-      switch (val) {
-        case 1:
-          valor = "a";
-          break;
-        case 2:
-          valor = "b";
-          break;
-        case 3:
-          valor = "c";
-          break;
-        case 4:
-          valor = "d";
-          break;
-        case 5:
-          valor = "e";
-          break;
-        default:
-          valor = "a";
-      }
-    } else {
-      switch (val) {
-        case "a":
-          valor = 1;
-          break;
-        case "b":
-          valor = 2;
-          break;
-        case "c":
-          valor = 3;
-          break;
-        case "d":
-          valor = 4;
-          break;
-        case "e":
-          valor = 5;
-          break;
-        default:
-          valor = 1;
-      }
-    }
-    return valor;
-  };
+  
 
   const enviar = async () => {
     respuestas();
     let usuario = cookies.get("usuario");
     console.log(cowocer);
     const res = await axios.post(
-      `http://localhost:8080/seguridad/actualizarPreguntas/${usuario}`,
+      `https://sgcn-app.herokuapp.com/seguridad/actualizarPreguntas/${usuario}`,
       cowocer
     );
 

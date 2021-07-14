@@ -18,9 +18,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import {Link, Switch, Route, useRouteMatch, Redirect} from 'react-router-dom';
-import Question from "../Components/pages/Question";
+
 import Grafico from './pages/Grafico';
 import CreacionUsuario from "./pages/CrecionUsuario";
+import PreguntasAdmin from './pages/PreguntasAdmin';
 import CrearParticipante from './pages/CrearParticipante';
 
 const drawerWidth = 240;
@@ -88,22 +89,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Admin = () => {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  let {url, path} = useRouteMatch();
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  return (
-    <>
-      <div className={classes.root}>
+const AdminParticipantes = () => {
+    const classes = useStyles();
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
+    let {url, path} = useRouteMatch();
+  
+    const handleDrawerOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleDrawerClose = () => {
+      setOpen(false);
+    };
+    return (
+        <>
+           <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -148,7 +149,7 @@ const Admin = () => {
         </div>
         <Divider />
         <List>
-          {['Question', 'Grafico', 'CreacionUsuario','Salir', 'Drafts'].map((text, index) => (
+          {['CrearParticipante','PreguntasAdmin', 'Salir', 'Drafts'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               {/* <ListItemText primary={text} /> */}
@@ -172,18 +173,17 @@ const Admin = () => {
         
         <Switch>
             
-            <Route path={`${path}/Question`} component={Question}></Route>
-            <Route path={`${path}/Grafico`} component={Grafico}></Route>
-            <Route path={`${path}/CreacionUsuario`} component={CreacionUsuario}></Route>
+            
+            <Route path={`${path}/CrearParticipante`} component={CrearParticipante}></Route>
+            <Route path={`${path}/PreguntasAdmin`} component={PreguntasAdmin}></Route>
             <Route path={`${path}/Salir`} component={Grafico}>
               <Redirect to="/"></Redirect>
             </Route>
         </Switch>
       </main>
-    </div>
-      
-    </>
-  );
-};
+    </div> 
+        </>
+    )
+}
 
-export default Admin;
+export default AdminParticipantes

@@ -7,44 +7,39 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
-import usuarios from "../../images/usuarios.svg"
-
+import usuarios from "../../images/usuarios.svg";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 const maill = {
   mailInstitucional: "",
-}
+};
 
 const datosUsuario = {
- 
   nombreUsuario: "",
   password: "",
   nombres: "",
   apellidos: "",
   rol: {
-    idRol: "3",
+    idRol: "2",
   },
 };
 
-const uniSelec = {
-  idUniversidad: "",
-};
+
 const initialForm = {
   mailInstitucional: "",
   datosUsuario,
-  uniSelec,
+ 
 };
 
-const CrecionUsuario = () => {
+const CrearParticipante = () => {
   const [formUsuario, setFormUsuario] = useState(initialForm);
   const [mailInstitucional, setMainInstitucional] = useState("");
   const [usuario, setUsuario] = useState(datosUsuario);
-  const [universidad, setUniv] = useState(uniSelec);
-  const [universidades, setUniversidad] = useState([]);
+  const [universidad, setUniv] = useState("");
+  const [nombreU, setNombreU] = useState("")
+
   const [open, setOpen] = React.useState(true);
   const [open2, setOpen2] = React.useState(false);
-
-
-  
-
 
   const handleClick = () => {
     setOpen(true);
@@ -60,61 +55,59 @@ const CrecionUsuario = () => {
   };
 
   useEffect(() => {
-    obtenerUniversidades();
+
+    obtenerUniversidad();
   }, []);
 
-  const obtenerUniversidades = async () => {
+ 
+
+  const obtenerUniversidad = async () => {
+    let usuario = cookies.get("usuario");
+    console.log(usuario);
     const res = await axios.get(
-      "https://sgcn-app.herokuapp.com/seguridad/obtenerUniversidades"
+      `https://sgcn-app.herokuapp.com/seguridad/obtenerUCoworker/${usuario}`
     );
-    console.log(res);
-    console.log(res.data[0].univesidades);
-    setUniversidad(res.data);
-    console.log(universidades);
+
+    setUniv(res.data.idUniversidad);
+    setNombreU(res.data.universidad);
+    console.log(res.data);
   };
 
-  const enviarNuevoUsuario = async () => {
-    
-   
+  const enviarNuevoUsuario = () => {
     setUsuario(datosUsuario);
-    setUniv(uniSelec);
+  
     setMainInstitucional("");
     setFormUsuario(initialForm);
     setOpen2(true);
   };
 
   const handleSubmit = async () => {
-    
-    if (
-      !usuario.nombreUsuario ||
-      !usuario.password 
-  
-    ) {
+    if (!usuario.nombreUsuario || !usuario.password) {
       setOpen(true);
-      
     } else {
       console.log("entros2");
-      setFormUsuario({ mailInstitucional: mailInstitucional , usuario, universidad });
+      setFormUsuario({
+        mailInstitucional: mailInstitucional,
+        usuario,
+        universidad,
+      });
       const res = await axios.post(
-        
         "https://sgcn-app.herokuapp.com/seguridad/crearCoworker",
-        {mailInstitucional: mailInstitucional , usuario, universidad}
+        { mailInstitucional: mailInstitucional, usuario, universidad: {idUniversidad: universidad} }
       );
-     
-      
+
       enviarNuevoUsuario();
     }
   };
 
   const handleChange = (e) => {
     setUsuario({ ...usuario, [e.target.name]: e.target.value });
-    
   };
 
   return (
     <div>
       <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-        Creacion de Usuario
+        Creacion Participante
       </h2>
       <Grid container spasing={8}>
         <Grid item xs={6}>
@@ -148,7 +141,9 @@ const CrecionUsuario = () => {
           <TextField
             style={{ margin: "0.5cm" }}
             id="standard-basic"
-            onChange={(e)=>{setMainInstitucional(e.target.value)}}
+            onChange={(e) => {
+              setMainInstitucional(e.target.value);
+            }}
             name="mailInstitucional"
             value={mailInstitucional}
             label="Mail institucional"
@@ -165,25 +160,18 @@ const CrecionUsuario = () => {
             fullWidth
           />
           <Autocomplete
-            
-            onChange={(event, newValue) => {
-              
-              if(newValue){
-                setUniv({ idUniversidad: newValue.idUniversidad });
-              }
-            }}
-            id="combo-box-demo"
-            // onClick={(option) => formUsuario.universiad = option.idUniversidad}
-            options={universidades}
-            getOptionLabel={(option) => option.nombreUniversidad}
-            style={{ width: "100%", margin: "0.5cm" }}
-            renderInput={(params) => (
-              <TextField {...params} label="Universdad" variant="outlined" />
-            )}
-          />
+          inputValue={nombreU}
+          id="disabled"
+          disabled
+          renderInput={(params) => <TextField {...params} label="Universidad" margin="normal" />}
+      />
         </Grid>
         <Grid item xs={6}>
-          <img style={{width:"100%", textAlign:"center"}} alt="" src={usuarios}></img>
+          <img
+            style={{ width: "100%", textAlign: "center" }}
+            alt=""
+            src={usuarios}
+          ></img>
         </Grid>
         <Grid item xs={12}>
           <Button
@@ -196,8 +184,8 @@ const CrecionUsuario = () => {
             }}
             variant="contained"
           >
-            {" "}
-            Guardar Usuario{" "}
+         
+            Guardar Usuario
           </Button>
         </Grid>
       </Grid>
@@ -205,12 +193,14 @@ const CrecionUsuario = () => {
         <Alert onClose={handleClose} severity="info">
           Tiene que rellenar todos los datos!
         </Alert>
-      </Snackbar>;
+      </Snackbar>
+      ;
       <Snackbar open={open2} autoHideDuration={6000} onClose={handleClose}>
         <Alert severity="success">Particpante guardado con exito</Alert>
-      </Snackbar>;
+      </Snackbar>
+      ;
     </div>
   );
 };
 
-export default CrecionUsuario;
+export default CrearParticipante;
