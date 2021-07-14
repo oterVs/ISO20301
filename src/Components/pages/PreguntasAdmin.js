@@ -6,9 +6,13 @@ import PreguntaUsuario from "./PreguntaUsuario";
 import { Button, Grid } from "@material-ui/core";
 import Escala from "./Escala";
 import Cookies from "universal-cookie";
-import Alert from "@material-ui/lab/Alert";
+import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 const cookies = new Cookies();
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const PreguntasAdmin = () => {
     const [preguntas, setPreguntas] = useState([]);
     const [cowocer, setCowoker] = useState([]);
@@ -112,6 +116,7 @@ const PreguntasAdmin = () => {
               calif={el.calificacion}
               handleAnswer={handleAnswer}
               key={el.pregunta.idPregunta}
+              num={el.pregunta.idPregunta}
               Pregunta={el.pregunta.pregunta}
             ></PreguntaUsuario>
           ))}

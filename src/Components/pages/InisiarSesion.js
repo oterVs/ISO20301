@@ -4,10 +4,9 @@ import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const initialForm = {
   usuario: "",
@@ -20,38 +19,23 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-    "& > * + *": {
-      marginTop: theme.spacing(2),
-    },
-  },
-}));
-
 const InisiarSesion = () => {
   const [form, setForm] = useState(initialForm);
-  const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  let location = useLocation();
+
   let history = useHistory();
   
   useEffect(() => {
     cookies.remove("usuario", { path: "/" });
     cookies.remove("tipo", { path: "/" });
-    console.log(location);
-    console.log(history);
+
   }, [])
 
-  const handleClick = () => {
-    setOpen(true);
-  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
     setOpen(false);
   };
 
@@ -84,7 +68,7 @@ const InisiarSesion = () => {
           if (cookies.get("tipo") === "1") {
             history.push("/Admin");
           } else if(cookies.get("tipo") === "3") {
-            console.log("entro");
+          
             history.push("/AdminParticipantes");
            
           } else {
@@ -95,21 +79,18 @@ const InisiarSesion = () => {
           setOpen(true);
         }
       })
-      .catch((error) => console.log(error));
-  
-    // if (form.email === "uno@dos" && form.pass === "uno") {
-    //   console.log("entro");
-    //   window.location.href = "./Admin";
-    // } else {
-    //   window.location.href = "./User";
-    // }
+      .catch((error) => {
+        console.log(error);
+        setOpen(true);
+      });
+
   };
   return (
     <>
       <Form>
-        <h2>SGCN_2</h2>
-        <hr></hr>
-        <Form.Group controlId="formBasicEmail">
+        <h2>Sistema de Gestión de la Continuidad del Negocio</h2>
+        <hr style={{marginBottom:"30px"}}></hr>
+        <Form.Group controlId="formBasicEmail" >
           <Form.Label>Usuario</Form.Label>
           <Form.Control
             type="txt"
@@ -131,8 +112,8 @@ const InisiarSesion = () => {
           />
         </Form.Group>
 
-        <Button className="prueba" variant="primary" onClick={handleSubmit}>
-          Submit
+        <Button className="prueba" variant="primary" onClick={handleSubmit} style={{marginTop:"20px"}}>
+          Iniciar Sesión
         </Button>
         <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
           <Alert onClose={handleClose} severity="error">

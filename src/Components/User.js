@@ -7,25 +7,28 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import InputBase from "@material-ui/core/InputBase";
+
 import Badge from "@material-ui/core/Badge";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
+
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import PreguntaUsuario from "./pages/PreguntaUsuario";
 import { Button, Grid } from "@material-ui/core";
-import Escala from "./pages/Escala";
+
 import Cookies from "universal-cookie";
-import Alert from "@material-ui/lab/Alert";
+import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 
 const cookies = new Cookies();
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
@@ -107,7 +110,7 @@ const User = () => {
   useEffect(() => {
     const obtenerPreguntas = async () => {
       let usuario = cookies.get("usuario");
-      console.log(usuario);
+     
       const res = await axios.get(
         `https://sgcn-app.herokuapp.com/seguridad/preguntasCoworker/${usuario}`
       );
@@ -153,16 +156,14 @@ const User = () => {
   };
 
   const handleAnswer = (id, calif) => {
-    console.log(id, calif);
-
+   
     preguntas.forEach((el) => {
       if (id === el.idCoworkerPregunta) {
         el.calificacion = parseInt(calif, 10);
       }
     });
     setPreguntas(preguntas);
-    // let newData = preguntas.map(el => el.idCoworkerPregunta === id? el.calificacion = calif:el);
-    // setPreguntas(newData);
+ 
   };
 
   const classes = useStyles();
@@ -321,6 +322,7 @@ const User = () => {
               calif={el.calificacion}
               handleAnswer={handleAnswer}
               key={el.pregunta.idPregunta}
+              num={el.pregunta.idPregunta}
               Pregunta={el.pregunta.pregunta}
             ></PreguntaUsuario>
           ))}

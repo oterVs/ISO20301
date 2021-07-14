@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
-import Alert from "@material-ui/lab/Alert";
+import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import usuarios from "../../images/usuarios.svg";
 import Cookies from "universal-cookie";
@@ -30,7 +30,9 @@ const initialForm = {
   datosUsuario,
  
 };
-
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const CrearParticipante = () => {
   const [formUsuario, setFormUsuario] = useState(initialForm);
   const [mailInstitucional, setMainInstitucional] = useState("");
@@ -39,7 +41,8 @@ const CrearParticipante = () => {
   const [nombreU, setNombreU] = useState("")
 
   const [open, setOpen] = React.useState(true);
-  const [open2, setOpen2] = React.useState(false);
+  const [typeAlert, setTypeAlert] = React.useState("");
+  const [messageAlert, setMesaggeAlert] = React.useState("");
 
   const handleClick = () => {
     setOpen(true);
@@ -51,7 +54,6 @@ const CrearParticipante = () => {
     }
 
     setOpen(false);
-    setOpen2(false);
   };
 
   useEffect(() => {
@@ -78,14 +80,17 @@ const CrearParticipante = () => {
   
     setMainInstitucional("");
     setFormUsuario(initialForm);
-    setOpen2(true);
+  
   };
 
   const handleSubmit = async () => {
-    if (!usuario.nombreUsuario || !usuario.password) {
-      setOpen(true);
+    if (!usuario.nombreUsuario ||
+      !usuario.password || !usuario.nombres || !usuario.apellidos) {
+        setOpen(true);
+        setMesaggeAlert("Por favor rellene todos los campos");
+        setTypeAlert("info");
     } else {
-      console.log("entros2");
+
       setFormUsuario({
         mailInstitucional: mailInstitucional,
         usuario,
@@ -94,7 +99,15 @@ const CrearParticipante = () => {
       const res = await axios.post(
         "https://sgcn-app.herokuapp.com/seguridad/crearCoworker",
         { mailInstitucional: mailInstitucional, usuario, universidad: {idUniversidad: universidad} }
-      );
+      ).then(()=>{
+        setOpen(true);
+        setMesaggeAlert("Usuario guardado exitosamente");
+        setTypeAlert("success");
+      }).catch((e)=>{
+        setOpen(true);
+        setMesaggeAlert("No se pudo almacenar al usuario intente de nuevo");
+        setTypeAlert("error");
+      });
 
       enviarNuevoUsuario();
     }
@@ -170,7 +183,7 @@ const CrearParticipante = () => {
           <img
             style={{ width: "100%", textAlign: "center" }}
             alt=""
-            src={usuarios}
+            src="https://www.tesisytareas.com/wp-content/uploads/2020/04/undraw_team_spirit_hrr41-1024x758.png"
           ></img>
         </Grid>
         <Grid item xs={12}>
@@ -190,15 +203,11 @@ const CrearParticipante = () => {
         </Grid>
       </Grid>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="info">
-          Tiene que rellenar todos los datos!
+        <Alert onClose={handleClose} severity={typeAlert}>
+          {messageAlert}
         </Alert>
       </Snackbar>
-      ;
-      <Snackbar open={open2} autoHideDuration={6000} onClose={handleClose}>
-        <Alert severity="success">Particpante guardado con exito</Alert>
-      </Snackbar>
-      ;
+      
     </div>
   );
 };

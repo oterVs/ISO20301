@@ -6,8 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
-
-
+import MuiAlert from "@material-ui/lab/Alert";
+import Snackbar from "@material-ui/core/Snackbar";
 
 const top100Films = [
   { title: "The Shawshank Redemption", year: 1994 },
@@ -115,6 +115,9 @@ const top100Films = [
   { title: "3 Idiots", year: 2009 },
   { title: "Monty Python and the Holy Grail", year: 1975 },
 ];
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -127,13 +130,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const data = {
-  labels: ["Thing 1", "Thing 2", "Thing 3", "Thing 4", "Thing 5", "Thing 6"],
+  labels: ["Seleccione una Universidad",],
   datasets: [
     {
       label: "Calificacion",
-      data: [4, 4, 2, 3.4, 1, 2],
-      backgroundColor: "rgba(255, 99, 132, 0.1)",
-      borderColor: "rgba(255, 99, 132, 1)",
+      data: [0, ],
+      backgroundColor: "rgba(33, 147, 176, 0.1)",
+      borderColor: "rgba(33, 147, 176, 1)",
       borderWidth: 1,
     },
   ],
@@ -161,8 +164,16 @@ const Grafico = () => {
   const [uni, setUni] = useState("Universidad Central Del Ecuador");
   const [preguntas, setPreguntas] = useState([]);
   const [notas, setNotas] = useState([]);
-  const ref = useRef();
- 
+  const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+    setOpen2(false);
+  };
   // const [labels, setLabels] = useState([]);
   // const [dataset, setDataset] = useState(datasets);
   const [dat, setDat] = useState(data)
@@ -190,9 +201,6 @@ const Grafico = () => {
     );
     setPreguntas(res.data);
   
-
-    
-
   };
 
   const colocarLabel = () => {
@@ -261,6 +269,9 @@ const Grafico = () => {
           newData.datasets[0].data[el.pregunta.idPregunta -1] = res[`promedio ${el.pregunta.idPregunta}`];
         
         })
+      }).catch((e)=>{
+        console.log(e);
+        setOpen(true);
       })
       setDat(newData);
       let ctx = document.getElementById("myChart").getContext("2d");
@@ -292,12 +303,13 @@ const Grafico = () => {
             onChange={(event, newValue) => {
               if(newValue){
                 setUni(newValue.nombreUniversidad);
+                console.log(newValue.nombreUniversidad)
+              } else {
+                console.log("es null")
               }
           
             }}
 
-           
-            
             id="combo-box-demo"
             options={universidad}
             getOptionLabel={(option) => option.nombreUniversidad}
@@ -324,6 +336,16 @@ const Grafico = () => {
           </Grid>
         </Grid>
       </Grid>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            Error al recuperar la data intente de nuevo !
+          </Alert>
+        </Snackbar>
+        <Snackbar open={open2} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="error">
+            Usuario incorrecto!
+          </Alert>
+        </Snackbar>
     </div>
   );
 };
