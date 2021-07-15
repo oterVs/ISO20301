@@ -11,6 +11,9 @@ import usuarios from "../../images/usuarios.svg";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
+const uniSelec = {
+  idUniversidad: "",
+};
 const datosUsuario = {
   nombres: "",
   apellidos: "",
@@ -29,10 +32,10 @@ const CrearParticipante = () => {
   const [formUsuario, setFormUsuario] = useState(initialForm);
   const [mailInstitucional, setMainInstitucional] = useState("");
   const [usuario, setUsuario] = useState(datosUsuario);
-  const [universidad, setUniv] = useState("");
+  const [universidad, setUniv] = useState(uniSelec);
   const [nombreU, setNombreU] = useState("");
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [typeAlert, setTypeAlert] = React.useState("");
   const [messageAlert, setMesaggeAlert] = React.useState("");
 
@@ -80,12 +83,13 @@ const CrearParticipante = () => {
       setFormUsuario({
         mailInstitucional: mailInstitucional,
         usuario,
-        universidad,
+        universidad: {idUniversidad: universidad},
       });
+      console.log({usuario,universidad})
       const res = await axios
         .post("https://sgcn-app.herokuapp.com/seguridad/crearCoworker", {
           usuario,
-          universidad,
+          universidad: {idUniversidad: universidad},
         })
         .then(() => {
           setOpen(true);

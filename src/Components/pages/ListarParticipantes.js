@@ -157,7 +157,7 @@ const ListarParticipantes = () => {
 
   return (
     <div>
-      <h2>Participantes por universiad</h2>
+      {!activoCombo?<h2>Participantes por universiad</h2>:<h2>Participantes de la {univ}</h2>}
       <Grid container>
         <Grid item xs={5}>
 
@@ -172,7 +172,7 @@ const ListarParticipantes = () => {
             }}
             id="combo-box-demo"
             disabled={activoCombo}
-            // {activoCombo ? inputValue={uni}:inputValue=""}
+            
             
             options={universidades}
             getOptionLabel={(option) => option.nombreUniversidad}

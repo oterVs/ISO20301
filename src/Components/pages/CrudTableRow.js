@@ -1,7 +1,7 @@
 const CrudTableRow = (el) => {
     console.log(el);
     let {apellidos, nombreUsuario,nombres,password } = el.el;
-    let rol = "s";
+    let rol = el.el.rol.idRol;
     return (
         <tr>
         <td>{nombres}</td>

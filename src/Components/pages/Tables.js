@@ -88,9 +88,9 @@ const Tables = (data) => {
                     <tr>
                         <th>Nombres</th>
                         <th>Apellidos</th>
-                        <th>Rol</th> 
-                        <th>Usuario</th>
+                        <th>Usuario</th> 
                         <th>Contraseña</th>
+                        <th>Rol</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -73,12 +73,14 @@ const Question = () => {
       setOpen(true);
       setMesaggeAlert("Reinicio realizado con exito");
       setTypeAlert("success");
+      setOpenD(false);
     }).catch((e) => {
       setOpen(true);
       setMesaggeAlert("No se pudo completar el reinicio");
       setTypeAlert("error");
+      setOpenD(false);
     });
-    setOpenD(true);
+   
   }
 
   const handleClose = (event, reason) => {
