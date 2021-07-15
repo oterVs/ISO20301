@@ -9,8 +9,10 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 
+import CircularProgress from '@material-ui/core/CircularProgress'
 import MuiAlert from "@material-ui/lab/Alert";
 import CrudTableRow from "./CrudTableRow";
+
 const columns = [
     { id: "name", label: "Nombre", minWidth: 170 },
     { id: "code", label: "Apellidos", minWidth: 170 },
@@ -60,7 +62,7 @@ const Tables = (data) => {
     const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
- 
+     const [render, setRender] = useState(true);
 
     useEffect(() => {
       console.log("entro")
@@ -97,6 +99,8 @@ const Tables = (data) => {
                     {data.data.length === 0 ? <tr colSpan="3"><td>Sin datos</td></tr>:data.data.map(el => 
                         <CrudTableRow key={el.id} el={el} 
                         ></CrudTableRow>)}
+                      
+                      
                 </tbody>
             </table>
         </div>

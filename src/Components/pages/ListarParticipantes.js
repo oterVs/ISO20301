@@ -16,6 +16,7 @@ import axios from "axios";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
 import Tables from "./Tables"
+import CircularProgress from '@material-ui/core/CircularProgress'
 const cookies = new Cookies();
 const columns = [
   { id: "name", label: "Nombre", minWidth: 170 },
@@ -74,7 +75,7 @@ const ListarParticipantes = () => {
   const [universidades, setUniversidades] = useState(null);
   const [participantes, setParticipantes] = useState([]);
   const [data, setData] = useState([]);  
-
+  const [render, setRender] = useState(false);
    useEffect(() => {
         initialCombo();
         obtenerParticipantes();
@@ -112,7 +113,7 @@ const ListarParticipantes = () => {
    }
 
    const obtenerParticipantes = async () => {
-
+    setRender(true);
     console.log(univ);
     const res = await axios.get(
         `https://sgcn-app.herokuapp.com/seguridad/obtenerUsuarioPorUniversidad/${univ}`
@@ -122,11 +123,14 @@ const ListarParticipantes = () => {
         if(response){
           console.log(response)
           setParticipantes(response);
+          setRender(false);
         } else {
           setParticipantes([])
+          setRender(false);
         }
        
     });
+    
 
     // participantes.forEach((el) => {
         
@@ -182,9 +186,13 @@ const ListarParticipantes = () => {
             )}
           />
 
-           
 
          
+        </Grid>
+        <Grid item xs={1}></Grid>
+        <Grid  item xs={2}>
+        {render &&  <CircularProgress color="secondary" />}
+
         </Grid>
         <Grid item xs={12}>
           <Tables data={participantes}></Tables>
