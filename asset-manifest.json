@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/ISO20301/static/css/main.fe1403db.chunk.css",
-    "main.js": "/ISO20301/static/js/main.382eac6d.chunk.js",
-    "main.js.map": "/ISO20301/static/js/main.382eac6d.chunk.js.map",
-    "runtime-main.js": "/ISO20301/static/js/runtime-main.8f32befb.js",
-    "runtime-main.js.map": "/ISO20301/static/js/runtime-main.8f32befb.js.map",
+    "main.css": "/ISO20301/static/css/main.f92a14d1.chunk.css",
+    "main.js": "/ISO20301/static/js/main.d60443dd.chunk.js",
+    "main.js.map": "/ISO20301/static/js/main.d60443dd.chunk.js.map",
+    "runtime-main.js": "/ISO20301/static/js/runtime-main.c552631c.js",
+    "runtime-main.js.map": "/ISO20301/static/js/runtime-main.c552631c.js.map",
     "static/css/2.4c97ca4f.chunk.css": "/ISO20301/static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.77b6966e.chunk.js": "/ISO20301/static/js/2.77b6966e.chunk.js",
-    "static/js/2.77b6966e.chunk.js.map": "/ISO20301/static/js/2.77b6966e.chunk.js.map",
-    "static/js/3.612180ec.chunk.js": "/ISO20301/static/js/3.612180ec.chunk.js",
-    "static/js/3.612180ec.chunk.js.map": "/ISO20301/static/js/3.612180ec.chunk.js.map",
+    "static/js/2.5ea2443e.chunk.js": "/ISO20301/static/js/2.5ea2443e.chunk.js",
+    "static/js/2.5ea2443e.chunk.js.map": "/ISO20301/static/js/2.5ea2443e.chunk.js.map",
+    "static/js/3.d145474b.chunk.js": "/ISO20301/static/js/3.d145474b.chunk.js",
+    "static/js/3.d145474b.chunk.js.map": "/ISO20301/static/js/3.d145474b.chunk.js.map",
     "index.html": "/ISO20301/index.html",
     "static/css/2.4c97ca4f.chunk.css.map": "/ISO20301/static/css/2.4c97ca4f.chunk.css.map",
-    "static/css/main.fe1403db.chunk.css.map": "/ISO20301/static/css/main.fe1403db.chunk.css.map",
-    "static/js/2.77b6966e.chunk.js.LICENSE.txt": "/ISO20301/static/js/2.77b6966e.chunk.js.LICENSE.txt",
+    "static/css/main.f92a14d1.chunk.css.map": "/ISO20301/static/css/main.f92a14d1.chunk.css.map",
+    "static/js/2.5ea2443e.chunk.js.LICENSE.txt": "/ISO20301/static/js/2.5ea2443e.chunk.js.LICENSE.txt",
     "static/media/usuarios.8ae24111.svg": "/ISO20301/static/media/usuarios.8ae24111.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.8f32befb.js",
+    "static/js/runtime-main.c552631c.js",
     "static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.77b6966e.chunk.js",
-    "static/css/main.fe1403db.chunk.css",
-    "static/js/main.382eac6d.chunk.js"
+    "static/js/2.5ea2443e.chunk.js",
+    "static/css/main.f92a14d1.chunk.css",
+    "static/js/main.d60443dd.chunk.js"
   ]
 }
