@@ -9,14 +9,12 @@ import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import usuarios from "../../images/usuarios.svg"
 
-const maill = {
-  mailInstitucional: "",
-}
+
 
 const datosUsuario = {
  
-  nombreUsuario: "",
-  password: "",
+
+ 
   nombres: "",
   apellidos: "",
   rol: {
@@ -28,7 +26,7 @@ const uniSelec = {
   idUniversidad: "",
 };
 const initialForm = {
-  mailInstitucional: "",
+ 
   datosUsuario,
   uniSelec,
 };
@@ -44,7 +42,7 @@ const CrecionUsuario = () => {
   const [usuario, setUsuario] = useState(datosUsuario);
   const [universidad, setUniv] = useState(uniSelec);
   const [universidades, setUniversidad] = useState([]);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [typeAlert, setTypeAlert] = React.useState("");
   const [messageAlert, setMesaggeAlert] = React.useState("");
 
@@ -84,7 +82,7 @@ const CrecionUsuario = () => {
    
     setUsuario(datosUsuario);
     setUniv(uniSelec);
-    setMainInstitucional("");
+   
     setFormUsuario(initialForm);
  
   };
@@ -92,9 +90,8 @@ const CrecionUsuario = () => {
   const handleSubmit = async () => {
     
     if (
-      !usuario.nombreUsuario ||
-      !usuario.password || !usuario.nombres || !usuario.apellidos
-  
+      !usuario.nombres || !usuario.apellidos
+      
     ) {
       setOpen(true);
       setMesaggeAlert("Por favor rellene todos los campos");
@@ -102,11 +99,11 @@ const CrecionUsuario = () => {
       
     } else {
       console.log("entros2");
-      setFormUsuario({ mailInstitucional: mailInstitucional , usuario, universidad });
+      
       const res = await axios.post(
         
         "https://sgcn-app.herokuapp.com/seguridad/crearCoworker",
-        {mailInstitucional: mailInstitucional , usuario, universidad}
+        { usuario, universidad}
       ).then(()=>{
         setOpen(true);
         setMesaggeAlert("Usuario guardado exitosamente");
@@ -133,7 +130,7 @@ const CrecionUsuario = () => {
         Creacion de Usuario Admin
       </h2>
       <Grid container spasing={8}>
-        <Grid item xs={6}>
+        <Grid item xs={5}>
           <TextField
             style={{ margin: "0.5cm" }}
             id="standard-basic"
@@ -152,34 +149,8 @@ const CrecionUsuario = () => {
             label="Apellidos"
             fullWidth
           />
-          <TextField
-            style={{ margin: "0.5cm" }}
-            id="standard-basic"
-            onChange={handleChange}
-            name="nombreUsuario"
-            value={usuario.nombreUsuario}
-            label="Nombre de Usuario"
-            fullWidth
-          />
-          <TextField
-            style={{ margin: "0.5cm" }}
-            id="standard-basic"
-            onChange={(e)=>{setMainInstitucional(e.target.value)}}
-            name="mailInstitucional"
-            value={mailInstitucional}
-            label="Mail institucional"
-            fullWidth
-          />
-          <TextField
-            style={{ margin: "0.5cm" }}
-            id="standard-basic"
-            onChange={handleChange}
-            name="password"
-            value={usuario.password}
-            label="Password"
-            type="password"
-            fullWidth
-          />
+          
+         
           <Autocomplete
             
             onChange={(event, newValue) => {
@@ -197,11 +168,6 @@ const CrecionUsuario = () => {
               <TextField {...params} label="Universdad" variant="outlined" />
             )}
           />
-        </Grid>
-        <Grid item xs={6}>
-          <img style={{width:"100%", textAlign:"center"}} alt="" src="https://www.tesisytareas.com/wp-content/uploads/2020/04/undraw_team_spirit_hrr41-1024x758.png"></img>
-        </Grid>
-        <Grid item xs={12}>
           <Button
             onClick={handleSubmit}
             style={{
@@ -212,10 +178,17 @@ const CrecionUsuario = () => {
             }}
             variant="contained"
           >
-            {" "}
+           
             Guardar Usuario{" "}
           </Button>
         </Grid>
+        <Grid item xs={1}>
+          
+        </Grid>
+        <Grid item xs={6}>
+          <img style={{width:"100%", textAlign:"center"}} alt="" src="https://mailtumble.com/wp-content/uploads/2020/10/undraw_project_team_lc5a2.png"></img>
+        </Grid>
+        
       </Grid>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={typeAlert}>

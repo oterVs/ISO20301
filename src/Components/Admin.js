@@ -22,6 +22,7 @@ import Question from "../Components/pages/Question";
 import Grafico from './pages/Grafico';
 import CreacionUsuario from "./pages/CrecionUsuario";
 import CrearParticipante from './pages/CrearParticipante';
+import ListarParticipantes from './pages/ListarParticipantes';
 
 const drawerWidth = 240;
 
@@ -148,7 +149,7 @@ const Admin = () => {
         </div>
         <Divider />
         <List>
-          {['Question', 'Grafico', 'CreacionUsuario','Salir', 'Drafts'].map((text, index) => (
+          {['Question', 'Grafico', 'CreacionUsuario','ListarParticipantes','Salir', 'Drafts'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               {/* <ListItemText primary={text} /> */}
@@ -175,6 +176,7 @@ const Admin = () => {
             <Route path={`${path}/Question`} component={Question}></Route>
             <Route path={`${path}/Grafico`} component={Grafico}></Route>
             <Route path={`${path}/CreacionUsuario`} component={CreacionUsuario}></Route>
+            <Route path={`${path}/ListarParticipantes`} component={ListarParticipantes}></Route>
             <Route path={`${path}/Salir`} component={Grafico}>
               <Redirect to="/"></Redirect>
             </Route>

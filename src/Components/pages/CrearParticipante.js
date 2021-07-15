@@ -10,13 +10,8 @@ import Snackbar from "@material-ui/core/Snackbar";
 import usuarios from "../../images/usuarios.svg";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
-const maill = {
-  mailInstitucional: "",
-};
 
 const datosUsuario = {
-  nombreUsuario: "",
-  password: "",
   nombres: "",
   apellidos: "",
   rol: {
@@ -24,11 +19,8 @@ const datosUsuario = {
   },
 };
 
-
 const initialForm = {
-  mailInstitucional: "",
   datosUsuario,
- 
 };
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -38,7 +30,7 @@ const CrearParticipante = () => {
   const [mailInstitucional, setMainInstitucional] = useState("");
   const [usuario, setUsuario] = useState(datosUsuario);
   const [universidad, setUniv] = useState("");
-  const [nombreU, setNombreU] = useState("")
+  const [nombreU, setNombreU] = useState("");
 
   const [open, setOpen] = React.useState(true);
   const [typeAlert, setTypeAlert] = React.useState("");
@@ -57,11 +49,8 @@ const CrearParticipante = () => {
   };
 
   useEffect(() => {
-
     obtenerUniversidad();
   }, []);
-
- 
 
   const obtenerUniversidad = async () => {
     let usuario = cookies.get("usuario");
@@ -77,37 +66,37 @@ const CrearParticipante = () => {
 
   const enviarNuevoUsuario = () => {
     setUsuario(datosUsuario);
-  
+
     setMainInstitucional("");
     setFormUsuario(initialForm);
-  
   };
 
   const handleSubmit = async () => {
-    if (!usuario.nombreUsuario ||
-      !usuario.password || !usuario.nombres || !usuario.apellidos) {
-        setOpen(true);
-        setMesaggeAlert("Por favor rellene todos los campos");
-        setTypeAlert("info");
+    if (!usuario.nombres || !usuario.apellidos) {
+      setOpen(true);
+      setMesaggeAlert("Por favor rellene todos los campos");
+      setTypeAlert("info");
     } else {
-
       setFormUsuario({
         mailInstitucional: mailInstitucional,
         usuario,
         universidad,
       });
-      const res = await axios.post(
-        "https://sgcn-app.herokuapp.com/seguridad/crearCoworker",
-        { mailInstitucional: mailInstitucional, usuario, universidad: {idUniversidad: universidad} }
-      ).then(()=>{
-        setOpen(true);
-        setMesaggeAlert("Usuario guardado exitosamente");
-        setTypeAlert("success");
-      }).catch((e)=>{
-        setOpen(true);
-        setMesaggeAlert("No se pudo almacenar al usuario intente de nuevo");
-        setTypeAlert("error");
-      });
+      const res = await axios
+        .post("https://sgcn-app.herokuapp.com/seguridad/crearCoworker", {
+          usuario,
+          universidad,
+        })
+        .then(() => {
+          setOpen(true);
+          setMesaggeAlert("Usuario guardado exitosamente");
+          setTypeAlert("success");
+        })
+        .catch((e) => {
+          setOpen(true);
+          setMesaggeAlert("No se pudo almacenar al usuario intente de nuevo");
+          setTypeAlert("error");
+        });
 
       enviarNuevoUsuario();
     }
@@ -123,7 +112,7 @@ const CrearParticipante = () => {
         Creacion Participante
       </h2>
       <Grid container spasing={8}>
-        <Grid item xs={6}>
+        <Grid item xs={5}>
           <TextField
             style={{ margin: "0.5cm" }}
             id="standard-basic"
@@ -142,51 +131,15 @@ const CrearParticipante = () => {
             label="Apellidos"
             fullWidth
           />
-          <TextField
-            style={{ margin: "0.5cm" }}
-            id="standard-basic"
-            onChange={handleChange}
-            name="nombreUsuario"
-            value={usuario.nombreUsuario}
-            label="Nombre de Usuario"
-            fullWidth
-          />
-          <TextField
-            style={{ margin: "0.5cm" }}
-            id="standard-basic"
-            onChange={(e) => {
-              setMainInstitucional(e.target.value);
-            }}
-            name="mailInstitucional"
-            value={mailInstitucional}
-            label="Mail institucional"
-            fullWidth
-          />
-          <TextField
-            style={{ margin: "0.5cm" }}
-            id="standard-basic"
-            onChange={handleChange}
-            name="password"
-            value={usuario.password}
-            label="Password"
-            type="password"
-            fullWidth
-          />
+
           <Autocomplete
-          inputValue={nombreU}
-          id="disabled"
-          disabled
-          renderInput={(params) => <TextField {...params} label="Universidad" margin="normal" />}
-      />
-        </Grid>
-        <Grid item xs={6}>
-          <img
-            style={{ width: "100%", textAlign: "center" }}
-            alt=""
-            src="https://www.tesisytareas.com/wp-content/uploads/2020/04/undraw_team_spirit_hrr41-1024x758.png"
-          ></img>
-        </Grid>
-        <Grid item xs={12}>
+            inputValue={nombreU}
+            id="disabled"
+            disabled
+            renderInput={(params) => (
+              <TextField {...params} label="Universidad" margin="normal" />
+            )}
+          />
           <Button
             onClick={handleSubmit}
             style={{
@@ -197,9 +150,16 @@ const CrearParticipante = () => {
             }}
             variant="contained"
           >
-         
             Guardar Usuario
           </Button>
+        </Grid>
+        <Grid item xs={1}> </Grid>
+        <Grid item xs={6}>
+          <img
+            style={{ width: "100%", textAlign: "center" }}
+            alt=""
+            src="https://mailtumble.com/wp-content/uploads/2020/10/undraw_project_team_lc5a2.png"
+          ></img>
         </Grid>
       </Grid>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
@@ -207,7 +167,6 @@ const CrearParticipante = () => {
           {messageAlert}
         </Alert>
       </Snackbar>
-      
     </div>
   );
 };

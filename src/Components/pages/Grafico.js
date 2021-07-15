@@ -161,7 +161,7 @@ const options = {
 const Grafico = () => {
   const classes = useStyles();
   const [universidad, setUniversidad] = useState(null);
-  const [uni, setUni] = useState("Universidad Central Del Ecuador");
+  const [uni, setUni] = useState("Universidad Técnica Del Norte");
   const [preguntas, setPreguntas] = useState([]);
   const [notas, setNotas] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -179,10 +179,11 @@ const Grafico = () => {
   const [dat, setDat] = useState(data)
 
   useEffect(() => {
+     
     obtenerUniversidades();
     obtenerPreguntas();
     let ctx = document.getElementById("myChart").getContext("2d");
-    window.grafica = new Chart(ctx, {type:"radar", data: dat, options: options })
+    window.grafica = new Chart(ctx, {type:"radar", data: data, options: options })
 
   }, []);
 
@@ -197,7 +198,7 @@ const Grafico = () => {
   // }, [data]);
   const obtenerPreguntas = async () => {
     const res = await axios.get(
-      "https://sgcn-app.herokuapp.com/seguridad/preguntasCoworker/corbe"
+      "https://sgcn-app.herokuapp.com/seguridad/obtenerPreguntas"
     );
     setPreguntas(res.data);
   
@@ -248,25 +249,15 @@ const Grafico = () => {
     let newData = data;
  
     console.log("entro");
-    // await axios.get(
-    //   `http://localhost:8080/seguridad/promedioPreguntas/GAP ANÁLISIS/${uni}`
-    // ).then((response) =>{
-    //     return response.data
-    // }).then((response) => {
-    //   response.forEach(element => {
-    //     newData.push(element.nota);
-    //     labels.push()
-    //   });
-    //   console.log(response);
-    // });
+   
     await axios.get(
         `https://sgcn-app.herokuapp.com/seguridad/soloPromedioPreguntas/GAP ANÁLISIS/${uni}`
       ).then((res) => {
         return res.data
       }).then((res)=>{
         preguntas.forEach((el)=>{
-          newData.labels[el.pregunta.idPregunta -1 ] = `Pregunta: ${el.pregunta.idPregunta}`;
-          newData.datasets[0].data[el.pregunta.idPregunta -1] = res[`promedio ${el.pregunta.idPregunta}`];
+          newData.labels[el.idPregunta -1 ] = `Pregunta: ${el.idPregunta}`;
+          newData.datasets[0].data[el.idPregunta -1] = res[`promedio ${el.idPregunta}`];
         
         })
       }).catch((e)=>{
@@ -299,7 +290,6 @@ const Grafico = () => {
         <Grid item xs={12} style={{ marginBottom: "50px" }}>
           <Autocomplete
 
-           
             onChange={(event, newValue) => {
               if(newValue){
                 setUni(newValue.nombreUniversidad);
@@ -309,7 +299,7 @@ const Grafico = () => {
               }
           
             }}
-
+            
             id="combo-box-demo"
             options={universidad}
             getOptionLabel={(option) => option.nombreUniversidad}
@@ -322,8 +312,8 @@ const Grafico = () => {
         <Grid container xs={12}>
           <Grid item xs={5}>
             {preguntas.map((el) => (
-              <p key={el.pregunta.idPregunta}>
-                {el.pregunta.idPregunta} {el.pregunta.pregunta}
+              <p key={el.idPregunta}>
+                {el.idPregunta} {el.pregunta}
               </p>
             ))}
           </Grid>
